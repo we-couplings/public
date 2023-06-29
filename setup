@@ -1,0 +1,51 @@
+sudo add-apt-repository ppa:vbernat/haproxy-2.4 -y
+sudo apt install apache2 \
+                 ghostscript \
+                 libapache2-mod-php \
+                 mysql-server \
+                 php \
+                 php-bcmath \
+                 php-curl \
+                 php-imagick \
+                 php-intl \
+                 php-json \
+                 php-mbstring \
+                 php-mysql \
+                 php-xml \
+                 php-zip \
+                 mysql-client -y
+sudo mkdir -p /srv/www
+sudo chown www-data: /srv/www
+curl https://wordpress.org/latest.tar.gz | sudo -u www-data tar zx -C /srv/www
+sudo echo "<VirtualHost *:80>
+     ServerAdmin admin@example.com
+     DocumentRoot /srv/www/wordpress
+     ServerName sitename.com
+     ServerAlias www.sitename.com
+     <Directory /srv/www/wordpress/>
+          Options FollowSymlinks
+          AllowOverride All
+          Require all granted
+     </Directory>
+
+     ErrorLog ${APACHE_LOG_DIR}/wordpress_error.log
+     CustomLog ${APACHE_LOG_DIR}/wordpress_access.log combined
+</VirtualHost>" > tee -a /etc/apache2/sites-available/wordpress.conf
+sudo -u www-data cp /srv/www/wordpress/wp-config-sample.php /srv/www/wordpress/wp-config.php
+sudo -u www-data sed -i 's/database_name_here/wordpress/' /srv/www/wordpress/wp-config.php
+sudo -u www-data sed -i 's/username_here/wordpress/' /srv/www/wordpress/wp-config.php
+sudo -u www-data sed -i 's/password_here/<enterpasswordinhere>/' /srv/www/wordpress/wp-config.php
+
+sudo a2ensite wordpress
+sudo a2enmod rewrite
+sudo service apache2 reload
+sudo a2dissite 000-default
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+sudo apt upgrade
+sudo a2dismod php7.4
+sudo a2dismod php7.2
+sudo a2enmod php8.1
+sudo apt install tasksel cockpit 
+sudo apt install haproxy=2.4.\*
