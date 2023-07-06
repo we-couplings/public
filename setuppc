@@ -1,8 +1,6 @@
 sudo apt update
-sudo apt install net-tools ntp 
 sudo curl -o setup-repos.sh https://raw.githubusercontent.com/webmin/webmin/master/setup-repos.sh
 sudo sh setup-repos.sh
-apt-get install webmin
 sudo apt-get update
 sudo apt-get install ca-certificates curl gnupg
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -14,4 +12,4 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo apt install -y cephadm ceph-common
-sudo apt install cockpit tasksel
+sudo apt install cockpit tasksel net-tools ntp webmin
